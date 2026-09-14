@@ -1,0 +1,18 @@
+name: Build and push to ECR
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-push:
+    uses: cmoreira-dev/.github/.github/workflows/build-push-ecr.yml@main
+    with:
+      ecr_repository: backstage/app
+      aws_region: ${{ vars.AWS_REGION }}
+      aws_role_arn: ${{ vars.AWS_ROLE_ARN }}
