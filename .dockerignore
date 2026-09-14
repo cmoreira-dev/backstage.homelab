@@ -1,0 +1,13 @@
+# Multi-stage build needs packages/*/src and plugins/ in the build context
+# (compilation happens inside Docker) — only build output and deps are ignored.
+# https://backstage.io/docs/deployment/docker#multi-stage-build
+.git
+.yarn/cache
+.yarn/install-state.gz
+dist-types
+node_modules
+packages/*/dist
+packages/*/node_modules
+plugins/*/dist
+plugins/*/node_modules
+*.local.yaml
