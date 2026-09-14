@@ -112,7 +112,11 @@ backend:
     # Uncomment the following host directive to bind to specific interfaces
     # host: 127.0.0.1
   csp:
-    connect-src: ["'self'", 'http:', 'https:']
+    # Scaffold default was ["'self'", 'http:', 'https:'] — that lets the browser
+    # connect to *any* origin, which defeats CSP as an exfiltration control if an
+    # XSS ever landed. The frontend only needs to talk to this backend directly;
+    # everything external (GitHub, Kubernetes, ...) is proxied server-side.
+    connect-src: ["'self'"]
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:

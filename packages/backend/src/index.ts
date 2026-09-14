@@ -39,8 +39,11 @@ backend.add(
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 
 // permission plugin
+// SECURITY TODO: allow-all is a scaffold placeholder — paired with guest auth
+// (app-config.production.yaml) it means every visitor is a fully-authorized
+// admin. Replace with a real policy before deploying. See
+// https://backstage.io/docs/permissions/getting-started
 backend.add(import('@backstage/plugin-permission-backend'));
-// See https://backstage.io/docs/permissions/getting-started for how to create your own permission policy
 backend.add(
   import('@backstage/plugin-permission-backend-module-allow-all-policy'),
 );

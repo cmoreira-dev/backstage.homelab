@@ -28,6 +28,12 @@ backend:
       #   ca: # if you have a CA file and want to verify it you can uncomment this section
       #     $file: <file-path>/ca/server.crt
 
+# SECURITY TODO: guest auth (below) + the allow-all permission policy
+# (packages/backend/src/index.ts) are scaffold placeholders. Together they mean
+# anyone who can reach this backend is treated as a fully-authorized user — no
+# login, no restrictions. Must be replaced with a real provider (GitHub OAuth,
+# matching this org's identity) and an actual permission policy before this is
+# ever exposed via the Gateway API, even on the internal homelab network.
 auth:
   providers:
     guest: {}
