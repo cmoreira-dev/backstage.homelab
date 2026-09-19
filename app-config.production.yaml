@@ -1,6 +1,6 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  baseUrl: http://localhost:7007
+  baseUrl: https://backstage.cmoreira.dev
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -8,7 +8,10 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://localhost:7007
+  baseUrl: https://backstage.cmoreira.dev
+
+  cors:
+    origin: https://backstage.cmoreira.dev
 
   # config options: https://node-postgres.com/apis/client
   database:
@@ -25,15 +28,22 @@ backend:
       #   ca: # if you have a CA file and want to verify it you can uncomment this section
       #     $file: <file-path>/ca/server.crt
 
-# SECURITY TODO: guest auth (below) + the allow-all permission policy
-# (packages/backend/src/index.ts) are scaffold placeholders. Together they mean
-# anyone who can reach this backend is treated as a fully-authorized user — no
-# login, no restrictions. Must be replaced with a real provider (GitHub OAuth,
-# matching this org's identity) and an actual permission policy before this is
-# ever exposed via the Gateway API, even on the internal homelab network.
+# Guest auth is gone in production — sign-in is Microsoft Entra ID only, via
+# an App Registration in the cmoreira-dev tenant (values below sourced from
+# SSM, see gitops.backstage.homelab/helm/backstage/templates/externalsecret.yaml).
+# The permission policy in packages/backend/src/index.ts is still allow-all:
+# with guest auth removed, that just means "any signed-in org member is a
+# full admin", which is an acceptable default for a single-tenant homelab
+# portal — revisit if/when this ever needs per-user restrictions.
 auth:
   providers:
-    guest: {}
+    microsoft:
+      clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+      clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+      tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+      signIn:
+        resolvers:
+          - resolver: emailMatchingUserEntityProfileEmail
 
 catalog:
   # Overrides the default list locations from app-config.yaml as these contain example data.
@@ -56,3 +66,9 @@ catalog:
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
+
+    # Real org data — see org/users.yaml.
+    - type: file
+      target: ./org/users.yaml
+      rules:
+        - allow: [User]
