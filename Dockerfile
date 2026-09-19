@@ -40,8 +40,16 @@ FROM node:24-trixie-slim
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev && \
+    apt-get install -y --no-install-recommends libsqlite3-dev python3 python3-pip && \
     rm -rf /var/lib/apt/lists/*
+# TechDocs generator.runIn: 'local' (app-config.production.yaml) runs
+# `mkdocs build` as a subprocess instead of spawning a Docker container —
+# there's no Docker socket available in this pod. mkdocs-techdocs-core
+# pulls in mkdocs + the material theme + the plugins TechDocs expects.
+# --break-system-packages: Debian trixie's Python is externally-managed
+# (PEP 668); this is the only thing installed into it, no conflict risk.
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip3 install --break-system-packages mkdocs-techdocs-core==1.*
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
 # This should create the app dir as `node`.
