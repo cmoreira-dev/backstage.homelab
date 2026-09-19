@@ -36,6 +36,13 @@ backend:
 # full admin", which is an acceptable default for a single-tenant homelab
 # portal — revisit if/when this ever needs per-user restrictions.
 auth:
+  # Controls which keyed environment (auth.providers.microsoft.<env> below)
+  # the frontend requests — defaults to "development" if unset, which is a
+  # separate thing entirely from the backend's NODE_ENV and has nothing
+  # wiring it automatically. Without this the frontend calls
+  # /api/auth/microsoft/start?...&env=development, and the backend 404s:
+  # "No configuration available for the 'development' environment".
+  environment: production
   providers:
     microsoft:
       # Keyed by environment (NODE_ENV=production in the Dockerfile), not a
