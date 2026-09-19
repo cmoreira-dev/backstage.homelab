@@ -1,0 +1,29 @@
+---
+# Groups components by product/concern, matching the top-level categories in
+# cmoreira-dev's root CLAUDE.md. Referenced by individual repos'
+# catalog-info.yaml via spec.system.
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: homelab-platform
+  description: >-
+    Cluster platform: GitOps (ArgoCD), CI/CD, shared cluster addons, and
+    infra-as-code for the homelab Kubernetes cluster.
+spec:
+  owner: platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: teupadel
+  description: 'teupadel.com — AI padel movement analysis product'
+spec:
+  owner: platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: sara
+  description: 'Sara — ad-free Cifra Club chords/lyrics practice player'
+spec:
+  owner: platform-team

@@ -11,4 +11,15 @@ metadata:
 spec:
   profile:
     email: cassio@cmoreira.dev
-  memberOf: []
+  memberOf: [platform-team]
+---
+# Default owner for every cmoreira-dev repo's catalog-info.yaml — a single
+# homelab maintainer today, but keeps ownership modeled as a team rather
+# than a hardcoded person so it doesn't need touching if that ever changes.
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-team
+spec:
+  type: team
+  children: []

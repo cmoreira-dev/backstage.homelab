@@ -192,7 +192,21 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Group]
+  providers:
+    github:
+      cmoreiraDevProvider:
+        organization: 'cmoreira-dev'
+        catalogPath: /catalog-info.yaml
+        filters:
+          branch: main
+          # Every repo except the gitops.template scaffold itself (its
+          # catalog-info.yaml is a template with unfilled placeholder
+          # values, not a real component).
+          repository: '^(?!gitops\.template$).*$'
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
