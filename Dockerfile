@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 # --break-system-packages: Debian trixie's Python is externally-managed
 # (PEP 668); this is the only thing installed into it, no conflict risk.
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
-    pip3 install --break-system-packages mkdocs-techdocs-core==1.*
+    pip3 install --break-system-packages mkdocs-techdocs-core==1.7.1
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
 # This should create the app dir as `node`.
