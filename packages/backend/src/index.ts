@@ -39,6 +39,10 @@ backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(
   import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'),
 );
+// Org-wide discovery of catalog-info.yaml across cmoreira-dev/* repos — see
+// catalog.providers.github in app-config.yaml. Means individual repos don't
+// need to be registered as catalog.locations one by one.
+backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));

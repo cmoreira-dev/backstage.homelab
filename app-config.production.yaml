@@ -82,4 +82,10 @@ catalog:
     - type: file
       target: ./org/users.yaml
       rules:
-        - allow: [User]
+        - allow: [User, Group]
+
+    # Product/platform groupings — see org/systems.yaml.
+    - type: file
+      target: ./org/systems.yaml
+      rules:
+        - allow: [System]
