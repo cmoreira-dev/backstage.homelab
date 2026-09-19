@@ -38,12 +38,16 @@ backend:
 auth:
   providers:
     microsoft:
-      clientId: ${AUTH_MICROSOFT_CLIENT_ID}
-      clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
-      tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-      signIn:
-        resolvers:
-          - resolver: emailMatchingUserEntityProfileEmail
+      # Keyed by environment (NODE_ENV=production in the Dockerfile), not a
+      # flat object — the provider's config.schema.json declares
+      # auth.providers.microsoft as a map of env name -> provider config.
+      production:
+        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
 
 catalog:
   # Overrides the default list locations from app-config.yaml as these contain example data.
