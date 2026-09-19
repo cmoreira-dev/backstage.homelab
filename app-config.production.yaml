@@ -2,6 +2,14 @@ app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
   baseUrl: https://backstage.cmoreira.dev
 
+# app-config.yaml's default (generator.runIn: 'docker') spawns a Docker
+# container to run `mkdocs build` — there's no Docker socket in this pod.
+# 'local' runs mkdocs as a subprocess directly instead; the Dockerfile
+# installs it (mkdocs-techdocs-core) for that to work.
+techdocs:
+  generator:
+    runIn: 'local'
+
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
   # should use when communicating with the backend, i.e. it needs to be
