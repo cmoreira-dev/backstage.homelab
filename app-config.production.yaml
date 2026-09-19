@@ -6,6 +6,17 @@ app:
 # container to run `mkdocs build` — there's no Docker socket in this pod.
 # 'local' runs mkdocs as a subprocess directly instead; the Dockerfile
 # installs it (mkdocs-techdocs-core) for that to work.
+#
+# Security trade-off: 'local' runs mkdocs (and whatever plugins/macros/hooks
+# a repo's mkdocs.yml pulls in — mkdocs supports arbitrary Python there) as
+# a subprocess directly inside this backend container, with the same
+# filesystem/env access as the backend process itself (GITHUB_TOKEN, DB
+# creds, Entra/GitHub OAuth secrets). 'docker' mode sandboxed generation in
+# an isolated container instead. This is acceptable ONLY because catalog
+# discovery (catalog.providers.github in app-config.yaml) is scoped to the
+# cmoreira-dev org, i.e. every repo whose docs get built here is one this
+# account already owns — there's no untrusted third-party content flowing
+# through techdocs-ref. Revisit if that scoping ever widens.
 techdocs:
   generator:
     runIn: 'local'
