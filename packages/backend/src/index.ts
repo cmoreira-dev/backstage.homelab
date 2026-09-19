@@ -33,6 +33,11 @@ backend.add(
 );
 // See https://backstage.io/docs/auth/microsoft/provider — configured for
 // production in app-config.production.yaml, replacing guest auth there.
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+// Not used for Backstage sign-in (Microsoft is the only sign-in provider) —
+// this is what lets the GitHub Actions plugin get a GitHub-scoped token to
+// call the API on the signed-in user's behalf. See auth.providers.github in
+// app-config.production.yaml.
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));

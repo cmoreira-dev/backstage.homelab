@@ -63,6 +63,20 @@ auth:
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
+    # Not a sign-in path — Microsoft is the only one wired into the frontend
+    # SignInPage. This exists purely so the GitHub Actions plugin can obtain
+    # a GitHub-scoped token for the signed-in user (lazy OAuth popup the
+    # first time that tab is opened). dangerouslyAllowSignInWithoutUserInCatalog
+    # is safe here precisely because it can't grant a Backstage identity —
+    # only used as a secondary token source for one plugin's API calls.
+    github:
+      production:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+              dangerouslyAllowSignInWithoutUserInCatalog: true
 
 catalog:
   # Overrides the default list locations from app-config.yaml as these contain example data.
