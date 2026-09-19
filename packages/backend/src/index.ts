@@ -28,6 +28,11 @@ backend.add(import('@backstage/plugin-auth-backend'));
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
 backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
 // See https://backstage.io/docs/auth/guest/provider
+backend.add(
+  import('@backstage/plugin-auth-backend-module-microsoft-provider'),
+);
+// See https://backstage.io/docs/auth/microsoft/provider — configured for
+// production in app-config.production.yaml, replacing guest auth there.
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
@@ -39,10 +44,12 @@ backend.add(
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 
 // permission plugin
-// SECURITY TODO: allow-all is a scaffold placeholder — paired with guest auth
-// (app-config.production.yaml) it means every visitor is a fully-authorized
-// admin. Replace with a real policy before deploying. See
-// https://backstage.io/docs/permissions/getting-started
+// allow-all: with Microsoft Entra ID as the only production auth provider
+// (app-config.production.yaml) and guest auth removed, this means "any
+// signed-in cmoreira-dev tenant member is a full admin" — an acceptable
+// default for a single-tenant homelab portal. Revisit with a real policy
+// (https://backstage.io/docs/permissions/getting-started) if per-user
+// restrictions are ever needed.
 backend.add(import('@backstage/plugin-permission-backend'));
 backend.add(
   import('@backstage/plugin-permission-backend-module-allow-all-policy'),

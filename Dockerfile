@@ -59,6 +59,7 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
 COPY --from=build --chown=node:node /app/packages/backend/dist/bundle/ ./
 COPY --chown=node:node app-config*.yaml ./
 COPY --chown=node:node examples ./examples
+COPY --chown=node:node org ./org
 ENV NODE_ENV=production
 EXPOSE 7007
 CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
