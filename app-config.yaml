@@ -70,11 +70,11 @@ app:
               row: 2
               width: 4
               height: 4
-            - component: HomePageRandomJoke
-              column: 8
-              row: 2
-              width: 4
-              height: 4
+            # HomePageRandomJoke removed — it fetches from
+            # official-joke-api.appspot.com directly from the browser, which
+            # the backend.csp.connect-src hardening below (deliberately
+            # scoped to 'self') correctly blocks. Not worth an exception for
+            # a novelty widget.
             - component: HomePageToolkit
               column: 4
               row: 6
@@ -97,7 +97,7 @@ app:
               height: 4
 
 organization:
-  name: My Company
+  name: cmoreira-dev
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
