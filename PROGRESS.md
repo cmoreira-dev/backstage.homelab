@@ -25,10 +25,10 @@ These differ from the original task description, verified against the tree:
 
 - [x] 1. `packages/app/src/theme/appleTheme.ts` — token source of truth
       (colors, radii, spacing) + `createUnifiedTheme`. No hex outside this file.
-- [~] 2. Typography — Inter substitution (display tracking `-0.01em`, body
-      line-height `1.44`), doc scale mapped onto MUI variants (h1–h6, body1,
-      body2, button, caption, …). Scale + metrics done; Inter *delivery* still
-      open (see deviations).
+- [x] 2. Typography — Inter substitution (display tracking `-0.01em`, body
+      line-height `1.44`, `ss03` feature), doc scale mapped onto MUI variants
+      (h1–h6, body1, body2, button, caption, …). Inter is self-hosted via
+      `@fontsource/inter` at the 300/400/600/700 ladder.
 - [x] 3. Border radius — pill on contained/outlined buttons + sidebar search,
       8px on the utility grammar (default button, form inputs), 18px on
       Card/Paper. Per-component overrides, no global `borderRadius`.
@@ -59,9 +59,21 @@ buttons → cards → global typography.
 
 ## Open questions / deviations
 
-- **Inter delivery.** The doc names Google Fonts. This app ships a deliberately
-  hardened CSP (`app-config.yaml`), so pulling `fonts.googleapis.com` +
-  `fonts.gstatic.com` would mean widening it. The font stack leads with
-  `system-ui, -apple-system, BlinkMacSystemFont` anyway (real SF Pro on
-  Apple devices, per the doc's own substitution note), so Inter only matters on
-  non-Apple platforms. Decision pending at the typography step — see item 2.
+- **Inter delivery — resolved: self-hosted, not Google Fonts.** The document
+  names Google Fonts, but this app ships a deliberately hardened CSP
+  (`app-config.yaml`), and a `<link>` to Google would mean widening both
+  `style-src` and `font-src` to external origins — and leaking viewer IPs to
+  Google — for a typeface. `@fontsource/inter` ships the same family from our
+  own origin: no CSP change, no third-party request. Verified in the build
+  output (`dist/static/inter-*.woff2`). The stack still leads with
+  `system-ui, -apple-system, BlinkMacSystemFont`, so Apple devices resolve the
+  real SF Pro and never download Inter at all.
+
+- **Sidebar untouched.** Item 5 anticipated editing `Sidebar.tsx`; Backstage
+  exposes the sidebar through `OverrideComponentNameToClassKeys`, so it was
+  done in the theme instead. No component file was edited for styling.
+
+- **Verification is build-level, not visual.** Every step was checked with
+  `tsc --noEmit`, `yarn workspace app lint` and `yarn workspace app build`.
+  Nothing here has been confirmed in a browser yet — that needs a deploy or a
+  local `yarn start` against a backend.

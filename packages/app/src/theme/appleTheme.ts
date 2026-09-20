@@ -197,6 +197,16 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
           letterSpacing: bodyScale.body1.letterSpacing,
           color: colors.ink,
           backgroundColor: colors.canvasParchment,
+          // Inter's `ss03` gives the single-storey "a" that reads closest to
+          // SF Pro. No-op on Apple platforms, where the stack resolves to the
+          // real SF Pro before Inter is ever reached.
+          fontFeatureSettings: "'ss03'",
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+        },
+        // Numeric links (versions, counts) line up in tables.
+        'code, pre': {
+          fontFeatureSettings: "'tnum'",
         },
       },
     },
