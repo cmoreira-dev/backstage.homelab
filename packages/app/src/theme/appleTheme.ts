@@ -1,6 +1,8 @@
 import {
   createUnifiedTheme,
+  pageTheme,
   palettes,
+  type PageTheme,
   type UnifiedTheme,
 } from '@backstage/theme';
 
@@ -74,6 +76,18 @@ const bodyLineHeight = 1.44;
 /** The system-wide press micro-interaction, applied to every button. */
 export const pressedScale = 0.95;
 
+/** Derives an rgba() from a token so translucent fills never restate a hex. */
+const withAlpha = (hex: string, alpha: number) => {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+/**
+ * Parchment at 80% — the fill behind the document's frosted bars, where the
+ * blur (not a shadow) is what conveys "floating above content".
+ */
+const frostedParchment = withAlpha(colors.canvasParchment, 0.8);
+
 /**
  * Document scale → MUI variant. The document's token names are kept in comments
  * so the mapping stays auditable against DESIGN-apple.md.
@@ -119,6 +133,23 @@ const typographyVariantOverrides = {
   ...bodyScale,
 };
 
+/**
+ * Backstage ships gradient "burst" page themes; the document is explicit that
+ * there are no decorative gradients and that rhythm comes from flat surface
+ * changes instead. Every page theme is flattened to the same parchment tile so
+ * headers read as one calm surface against the white content below.
+ */
+const flatPageTheme: PageTheme = {
+  colors: [colors.canvasParchment],
+  shape: 'none',
+  backgroundImage: 'none',
+  fontColor: colors.ink,
+};
+
+const flatPageThemes = Object.fromEntries(
+  Object.keys(pageTheme).map(name => [name, flatPageTheme]),
+);
+
 export const appleTheme: UnifiedTheme = createUnifiedTheme({
   palette: {
     ...palettes.light,
@@ -145,6 +176,7 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
     },
   },
   fontFamily,
+  pageTheme: flatPageThemes,
   typography: {
     htmlFontSize: 16,
     fontFamily,
@@ -170,6 +202,86 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
     },
     MuiTypography: {
       styleOverrides: typographyVariantOverrides,
+    },
+
+    // Elevation philosophy: the document's only drop-shadow belongs to product
+    // photography, which this app has none of. Depth therefore comes from
+    // surface change (parchment page vs white card) and from backdrop-blur on
+    // fixed bars — never from a shadow on a card, button or bar.
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          // MUI v5 fakes elevation in dark mode with an overlay gradient.
+          backgroundImage: 'none',
+        },
+        rounded: {
+          borderRadius: radii.lg,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          // `store-utility-card`: white fill, 18px, hairline instead of shadow.
+          backgroundColor: colors.canvas,
+          borderRadius: radii.lg,
+          border: `1px solid ${colors.hairline}`,
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: spacing.lg,
+        },
+      },
+    },
+    BackstageInfoCard: {
+      styleOverrides: {
+        header: {
+          padding: `${spacing.lg}px ${spacing.lg}px ${spacing.xs}px`,
+        },
+        headerTitle: {
+          fontSize: bodyScale.subtitle1.fontSize,
+          fontWeight: bodyScale.subtitle1.fontWeight,
+          letterSpacing: bodyScale.subtitle1.letterSpacing,
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+        },
+      },
+    },
+    // `sub-nav-frosted` — the one place depth is allowed, and it's blur, not
+    // shadow.
+    BackstageHeader: {
+      styleOverrides: {
+        header: {
+          backgroundImage: 'none',
+          backgroundColor: frostedParchment,
+          backdropFilter: 'saturate(180%) blur(20px)',
+          boxShadow: 'none',
+          borderBottom: `1px solid ${colors.hairline}`,
+          color: colors.ink,
+        },
+        title: {
+          color: colors.ink,
+        },
+        subtitle: {
+          color: colors.inkMuted80,
+        },
+        type: {
+          color: colors.inkMuted48,
+        },
+        breadcrumb: {
+          color: colors.inkMuted80,
+        },
+      },
     },
 
     MuiButton: {

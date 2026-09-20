@@ -29,11 +29,15 @@ These differ from the original task description, verified against the tree:
       line-height `1.44`), doc scale mapped onto MUI variants (h1–h6, body1,
       body2, button, caption, …). Scale + metrics done; Inter *delivery* still
       open (see deviations).
-- [~] 3. Border radius — pill on contained/outlined buttons + sidebar search,
-      8px on the utility grammar (default button, form inputs). Card/Paper 18px
-      lands with item 4. Per-component overrides, no global `borderRadius`.
-- [ ] 4. Elevation — `boxShadow: none` on Card/Paper/AppBar. Depth only via
-      surface change or backdrop-blur on fixed bars.
+- [x] 3. Border radius — pill on contained/outlined buttons + sidebar search,
+      8px on the utility grammar (default button, form inputs), 18px on
+      Card/Paper. Per-component overrides, no global `borderRadius`.
+- [x] 4. Elevation — `boxShadow: none` on Card/Paper/AppBar (+ `backgroundImage:
+      none` to kill MUI v5's overlay). Depth via surface change; the Backstage
+      header takes the `sub-nav-frosted` treatment (parchment 80% +
+      `saturate(180%) blur(20px)`). Backstage's gradient burst `pageTheme`s are
+      flattened to solid parchment — the document forbids decorative
+      gradients.
 - [x] 5. Nav — `global-nav` look (black `#000`, 44px, 12px type). Done purely
       through theme overrides (`BackstageSidebar`, `BackstageSidebarItem`,
       `BackstageSidebarDivider` are all theme-overridable via
