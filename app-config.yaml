@@ -181,16 +181,18 @@ auth:
     guest: {}
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
+  #
+  # This is the auth mechanism for the MCP actions server (mcpActions below,
+  # served at /api/mcp-actions/v1): an MCP client's `client_id` is itself a
+  # URL it publishes its own metadata at (RFC-style dynamic registration),
+  # so any client can request a token without being pre-registered here.
+  # That's fine — no MCP client gets one without this specific user
+  # approving it interactively in a Backstage popup (an Entra ID-authenticated
+  # session), same trust boundary as clicking "Sign in with Microsoft"
+  # anywhere else in this app. allowedClientIdPatterns/allowedRedirectUriPatterns
+  # default to ['*'], left unrestricted for the same reason.
   clientIdMetadataDocuments:
-    enabled: false
-    # Optional: restrict which `client_id` URLs are allowed (defaults to ['*'])
-    # allowedClientIdPatterns:
-    #   - 'https://example.com/*'
-    #   - 'https://*.trusted-domain.com/*'
-    # Optional: restrict which redirect URIs are allowed (defaults to ['*'])
-    # allowedRedirectUriPatterns:
-    #   - 'http://localhost:*'
-    #   - 'https://*.example.com/*'
+    enabled: true
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -251,6 +253,8 @@ permission:
   enabled: true
 
 # see https://backstage.io/docs/ai/mcp-actions for more details
+# Endpoint: <backend.baseUrl>/api/mcp-actions/v1 (see auth.clientIdMetadataDocuments
+# above for how MCP clients authenticate against it).
 mcpActions:
-  name: 'My Company Backstage' # defaults to "backstage"
-  description: 'Tools for managing your software catalog, creating new services from templates, and exploring your developer portal' # optional
+  name: 'cmoreira-dev Backstage'
+  description: 'Tools for managing the cmoreira-dev software catalog, creating new services from templates, and exploring the developer portal'
