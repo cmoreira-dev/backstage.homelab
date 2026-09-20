@@ -116,7 +116,15 @@ backend:
     # connect to *any* origin, which defeats CSP as an exfiltration control if an
     # XSS ever landed. The frontend only needs to talk to this backend directly;
     # everything external (GitHub, Kubernetes, ...) is proxied server-side.
-    connect-src: ["'self'"]
+    #
+    # Exception: api.github.com. @backstage-community/plugin-github-actions'
+    # GithubActionsClient constructs an Octokit client and calls the GitHub
+    # REST API directly from the browser (using the user's own GitHub OAuth
+    # token) — it isn't backend-proxied like everything else. Confirmed live:
+    # every call failed as a CSP-blocked fetch ("TypeError: Load failed" in
+    # Safari) before this was added. One specific, well-known, trusted host —
+    # not the kind of broad allowance this hardening exists to prevent.
+    connect-src: ["'self'", "https://api.github.com"]
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
