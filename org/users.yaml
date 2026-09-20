@@ -1,9 +1,11 @@
 ---
 # Real org data (not demo data — see examples/org.yaml for that). Referenced
-# from app-config.production.yaml's catalog.locations. The emailMatchingUserEntityProfileEmail
-# sign-in resolver (app-config.production.yaml's auth.providers.microsoft)
-# matches the email claim from Microsoft Entra ID against spec.profile.email
-# below to resolve a signed-in user's catalog identity.
+# from app-config.production.yaml's catalog.locations. The
+# emailLocalPartMatchingUserEntityName sign-in resolver
+# (app-config.production.yaml's auth.providers.microsoft) matches the local
+# part of the email claim from Microsoft Entra ID against metadata.name
+# below (not spec.profile.email — that broke across a logout/re-login when
+# Entra returned a different domain for the same identity).
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:

@@ -72,8 +72,20 @@ auth:
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
         signIn:
+          # emailMatchingUserEntityProfileEmail broke sign-in after a
+          # logout/re-login: confirmed live that the Entra token's email
+          # claim isn't stable across sessions — it came back as
+          # cassio@rapporthub.pt this time, not cassio@cmoreira.dev (the
+          # value in org/users.yaml), even though `az ad signed-in-user
+          # show` reports cassio@cmoreira.dev as the account's `mail`.
+          # Matching on the local part instead of the full address, scoped
+          # to the two domains this identity is known to show up as, is
+          # robust to whichever one Entra hands back on a given login.
           resolvers:
-            - resolver: emailMatchingUserEntityProfileEmail
+            - resolver: emailLocalPartMatchingUserEntityName
+              allowedDomains:
+                - cmoreira.dev
+                - rapporthub.pt
     # Not a sign-in path — Microsoft is the only one wired into the frontend
     # SignInPage. This exists purely so the GitHub Actions plugin can obtain
     # a GitHub-scoped token for the signed-in user (lazy OAuth popup the
