@@ -5,6 +5,7 @@ metadata:
   description: Internal developer portal for the cmoreira-dev homelab
   annotations:
     github.com/project-slug: cmoreira-dev/backstage.homelab
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://backstage.cmoreira.dev
       title: Backstage

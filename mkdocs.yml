@@ -1,0 +1,10 @@
+site_name: 'backstage.homelab'
+site_description: 'Internal developer portal for the cmoreira-dev homelab'
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Sign-in & Catalog: onboarding.md
+
+plugins:
+  - techdocs-core
