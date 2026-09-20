@@ -34,8 +34,13 @@ These differ from the original task description, verified against the tree:
       a global `borderRadius`.
 - [ ] 4. Elevation — `boxShadow: none` on Card/Paper/AppBar. Depth only via
       surface change or backdrop-blur on fixed bars.
-- [ ] 5. Nav — apply the `global-nav` look (black `#000`, 44px, 12px type) to
-      `modules/nav/Sidebar.tsx`.
+- [x] 5. Nav — `global-nav` look (black `#000`, 44px, 12px type). Done purely
+      through theme overrides (`BackstageSidebar`, `BackstageSidebarItem`,
+      `BackstageSidebarDivider` are all theme-overridable via
+      `OverrideComponentNameToClassKeys`), so `modules/nav/Sidebar.tsx` did not
+      need editing after all — tokens stay centralized in the theme file.
+      Backstage's nav is a vertical drawer, so 44px maps to per-item height
+      (also the document's min touch target), not bar height.
 - [ ] 6. Pressed state — `transform: scale(0.95)` on buttons, applied
       consistently.
 - [x] 7. Register the theme in `App.tsx` (via `ThemeBlueprint` module — see

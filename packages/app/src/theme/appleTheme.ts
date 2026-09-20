@@ -84,6 +84,14 @@ const typeScale = {
   h6: { fontSize: 21, fontWeight: 600, lineHeight: 1.19 }, // tagline
 } as const;
 
+/** `nav-link` — 12px, used by the sidebar and any other nav chrome. */
+const navLink = {
+  fontSize: 12,
+  fontWeight: 400,
+  lineHeight: 1.0,
+  letterSpacing: '-0.12px',
+} as const;
+
 const bodyScale = {
   subtitle1: { fontSize: 17, fontWeight: 600, lineHeight: 1.24, letterSpacing: '-0.374px' }, // body-strong
   body1: { fontSize: 17, fontWeight: 400, lineHeight: bodyLineHeight, letterSpacing: '-0.374px' }, // body
@@ -91,7 +99,7 @@ const bodyScale = {
   body2: { fontSize: 14, fontWeight: 400, lineHeight: 1.43, letterSpacing: '-0.224px' }, // caption
   button: { fontSize: 14, fontWeight: 400, lineHeight: 1.29, letterSpacing: '-0.224px' }, // button-utility
   caption: { fontSize: 12, fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.12px' }, // fine-print
-  overline: { fontSize: 12, fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.12px', textTransform: 'none' as const }, // nav-link
+  overline: { ...navLink, textTransform: 'none' as const }, // nav-link
 };
 
 /**
@@ -159,6 +167,58 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
     },
     MuiTypography: {
       styleOverrides: typographyVariantOverrides,
+    },
+
+    // The document's `global-nav` is a 44px horizontal black bar. Backstage's
+    // nav is a vertical drawer, so the 44px carries over as the per-item height
+    // (which is also the document's minimum touch target) rather than as the
+    // height of the bar itself. Black surface and 12px `nav-link` type do
+    // transfer literally.
+    BackstageSidebar: {
+      styleOverrides: {
+        drawer: {
+          backgroundColor: colors.surfaceBlack,
+          borderRight: 'none',
+        },
+        drawerOpen: {
+          backgroundColor: colors.surfaceBlack,
+        },
+      },
+    },
+    BackstageSidebarItem: {
+      styleOverrides: {
+        root: {
+          height: 44,
+          color: colors.bodyMuted,
+        },
+        label: {
+          fontFamily,
+          fontSize: navLink.fontSize,
+          fontWeight: navLink.fontWeight,
+          lineHeight: navLink.lineHeight,
+          letterSpacing: navLink.letterSpacing,
+          textTransform: 'none',
+        },
+        selected: {
+          color: colors.onDark,
+          borderLeftColor: colors.primary,
+        },
+        highlighted: {
+          backgroundColor: colors.surfaceTile1,
+        },
+        iconContainer: {
+          color: 'inherit',
+        },
+      },
+    },
+    BackstageSidebarDivider: {
+      styleOverrides: {
+        root: {
+          // A hairline that reads on black without becoming a drawn line —
+          // the document divides by surface step, not by stroke.
+          backgroundColor: colors.surfaceTile2,
+        },
+      },
     },
   },
 });
