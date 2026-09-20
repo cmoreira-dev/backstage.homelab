@@ -71,6 +71,9 @@ export const fontFamily =
 const displayTracking = '-0.01em';
 const bodyLineHeight = 1.44;
 
+/** The system-wide press micro-interaction, applied to every button. */
+export const pressedScale = 0.95;
+
 /**
  * Document scale → MUI variant. The document's token names are kept in comments
  * so the mapping stays auditable against DESIGN-apple.md.
@@ -169,6 +172,91 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
       styleOverrides: typographyVariantOverrides,
     },
 
+    MuiButton: {
+      defaultProps: {
+        // Elevation is never decorative in this system; a raised button would
+        // be the one shadow the document explicitly forbids.
+        disableElevation: true,
+      },
+      styleOverrides: {
+        // Utility grammar is the default: 8px, 14px `button-utility` type.
+        // The pill is reserved for the prominent actions below, so it keeps
+        // meaning something.
+        root: {
+          borderRadius: radii.sm,
+          textTransform: 'none',
+          fontFamily,
+          fontSize: bodyScale.button.fontSize,
+          fontWeight: bodyScale.button.fontWeight,
+          lineHeight: bodyScale.button.lineHeight,
+          letterSpacing: bodyScale.button.letterSpacing,
+          padding: `${spacing.xs}px ${spacing.sm + 3}px`,
+          boxShadow: 'none',
+          transition: 'transform 120ms ease-out, background-color 120ms ease-out',
+          // The system-wide micro-interaction — every button presses inward.
+          '&:active': {
+            transform: `scale(${pressedScale})`,
+          },
+          '&:focus-visible': {
+            outline: `2px solid ${colors.primaryFocus}`,
+            outlineOffset: 2,
+          },
+          '&:hover': {
+            boxShadow: 'none',
+          },
+        },
+        // `button-primary` — the signature Action Blue pill.
+        contained: {
+          borderRadius: radii.pill,
+          fontSize: bodyScale.body1.fontSize,
+          lineHeight: bodyScale.body1.lineHeight,
+          letterSpacing: bodyScale.body1.letterSpacing,
+          padding: `11px ${spacing.lg - 2}px`,
+          boxShadow: 'none',
+        },
+        containedPrimary: {
+          backgroundColor: colors.primary,
+          color: colors.onPrimary,
+        },
+        // `button-secondary-pill` — the ghost pill that partners the blue one.
+        outlined: {
+          borderRadius: radii.pill,
+          fontSize: bodyScale.body1.fontSize,
+          lineHeight: bodyScale.body1.lineHeight,
+          letterSpacing: bodyScale.body1.letterSpacing,
+          padding: `11px ${spacing.lg - 2}px`,
+        },
+        outlinedPrimary: {
+          borderColor: colors.primary,
+          color: colors.primary,
+        },
+        // `text-link` — inline actions carry the accent and no chrome.
+        text: {
+          color: colors.primary,
+        },
+      },
+    },
+
+    // `button-icon-circular` — 44px is both the documented size and the
+    // system's minimum touch target.
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          width: 44,
+          height: 44,
+          borderRadius: radii.pill,
+          transition: 'transform 120ms ease-out',
+          '&:active': {
+            transform: `scale(${pressedScale})`,
+          },
+          '&:focus-visible': {
+            outline: `2px solid ${colors.primaryFocus}`,
+            outlineOffset: 2,
+          },
+        },
+      },
+    },
+
     // The document's `global-nav` is a 44px horizontal black bar. Backstage's
     // nav is a vertical drawer, so the 44px carries over as the per-item height
     // (which is also the document's minimum touch target) rather than as the
@@ -208,6 +296,33 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
         },
         iconContainer: {
           color: 'inherit',
+        },
+        // `search-input` — the pill is the document's "this is an action"
+        // signal, and search is the one input it documents. Ordinary form
+        // fields keep the utility radius below, so the pill stays meaningful.
+        searchRoot: {
+          borderRadius: radii.pill,
+          backgroundColor: colors.surfaceTile1,
+        },
+        searchField: {
+          fontFamily,
+          fontSize: bodyScale.body2.fontSize,
+          letterSpacing: bodyScale.body2.letterSpacing,
+          color: colors.onDark,
+        },
+      },
+    },
+
+    // Form inputs sit in the utility grammar, not the pill one — the document
+    // only ever pills the search field, and a dense internal tool is mostly
+    // forms.
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: radii.sm,
+        },
+        multiline: {
+          borderRadius: radii.sm,
         },
       },
     },

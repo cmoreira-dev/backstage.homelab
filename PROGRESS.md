@@ -29,9 +29,9 @@ These differ from the original task description, verified against the tree:
       line-height `1.44`), doc scale mapped onto MUI variants (h1–h6, body1,
       body2, button, caption, …). Scale + metrics done; Inter *delivery* still
       open (see deviations).
-- [ ] 3. Border radius — pill (9999px) on primary buttons + search input,
-      18px on Card/Paper, 8px on utility buttons. Per-component overrides, not
-      a global `borderRadius`.
+- [~] 3. Border radius — pill on contained/outlined buttons + sidebar search,
+      8px on the utility grammar (default button, form inputs). Card/Paper 18px
+      lands with item 4. Per-component overrides, no global `borderRadius`.
 - [ ] 4. Elevation — `boxShadow: none` on Card/Paper/AppBar. Depth only via
       surface change or backdrop-blur on fixed bars.
 - [x] 5. Nav — `global-nav` look (black `#000`, 44px, 12px type). Done purely
@@ -41,8 +41,8 @@ These differ from the original task description, verified against the tree:
       need editing after all — tokens stay centralized in the theme file.
       Backstage's nav is a vertical drawer, so 44px maps to per-item height
       (also the document's min touch target), not bar height.
-- [ ] 6. Pressed state — `transform: scale(0.95)` on buttons, applied
-      consistently.
+- [x] 6. Pressed state — `transform: scale(0.95)` on `MuiButton` and
+      `MuiIconButton`, with a 120ms ease-out transition.
 - [x] 7. Register the theme in `App.tsx` (via `ThemeBlueprint` module — see
       repo facts above). Registered as `light` under `pluginId: 'app'`, which
       overrides the built-in `theme:app/light` so the restyle is the default
