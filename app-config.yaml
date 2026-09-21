@@ -276,6 +276,25 @@ catalog:
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  #
+  # Single cluster, and it's the one this backend already runs in — no
+  # explicit serviceAccountToken/caData given, so ServiceAccountStrategy
+  # falls back to KubeConfig#loadFromCluster() (reads the pod's own mounted
+  # token/CA). Needs the dedicated "backstage" ServiceAccount + ClusterRole/
+  # ClusterRoleBinding from gitops.backstage.homelab (not the "default" SA
+  # the pod ran as before — too broad an identity to bind cluster-read RBAC
+  # to). "homelab" matches the backstage.io/kubernetes-id annotation already
+  # used on catalog entities (e.g. gitops.teupadel.com's catalog-info.yaml).
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - url: https://kubernetes.default.svc
+          name: homelab
+          authProvider: serviceAccount
+          skipTLSVerify: false
+          skipMetricsLookup: false
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
