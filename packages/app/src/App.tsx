@@ -9,7 +9,8 @@ import mcpAuthPlugin from '@backstage/plugin-auth';
 import { navModule } from './modules/nav';
 import { homeModule } from './modules/home';
 import { authModule } from './modules/auth';
+import { themeModule } from './theme';
 
 export default createApp({
-  features: [catalogPlugin, techdocsPlugin, githubActionsPlugin, mcpAuthPlugin, navModule, homeModule, authModule],
+  features: [catalogPlugin, techdocsPlugin, githubActionsPlugin, mcpAuthPlugin, navModule, homeModule, authModule, themeModule],
 });

@@ -5182,6 +5182,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/inter@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource/inter@npm:5.3.0"
+  checksum: 10c0/568601c10c83601c23005f8cd7434499df6e007eaa22c4dabbb1dcae327cc8e4a148ece8d4a4edaa8bafc5d2371ea97a37d1cc91ffbed77a43e2d8c15a6e831b
+  languageName: node
+  linkType: hard
+
 "@google-cloud/container@npm:^5.0.0":
   version: 5.19.0
   resolution: "@google-cloud/container@npm:5.19.0"
@@ -12824,7 +12831,9 @@ __metadata:
     "@backstage/plugin-techdocs": "npm:^1.18.0"
     "@backstage/plugin-techdocs-module-addons-contrib": "npm:^1.1.39"
     "@backstage/plugin-user-settings": "npm:^0.9.6"
+    "@backstage/theme": "npm:^0.7.3"
     "@backstage/ui": "npm:^0.17.1"
+    "@fontsource/inter": "npm:^5.3.0"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@playwright/test": "npm:^1.32.3"
