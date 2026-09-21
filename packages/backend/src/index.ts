@@ -88,4 +88,10 @@ backend.add(import('@backstage/plugin-signals-backend'));
 // mcp actions plugin
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
 
+// argocd plugin — see argocd.appLocatorMethods in app-config.yaml. Read-only:
+// the 'backstage' ArgoCD account only has the apiKey capability (no RBAC
+// group binding), so it falls back to argocd-rbac-cm's policy.default of
+// role:readonly.
+backend.add(import('@backstage-community/plugin-argocd-backend'));
+
 backend.start();
