@@ -219,10 +219,21 @@ auth:
   # That's fine — no MCP client gets one without this specific user
   # approving it interactively in a Backstage popup (an Entra ID-authenticated
   # session), same trust boundary as clicking "Sign in with Microsoft"
-  # anywhere else in this app. allowedClientIdPatterns/allowedRedirectUriPatterns
-  # default to ['*'], left unrestricted for the same reason.
+  # anywhere else in this app.
+  #
+  # allowedClientIdPatterns already defaults to include 'https://claude.ai/*'
+  # (see @backstage/plugin-auth-backend's OidcService), but
+  # allowedRedirectUriPatterns does NOT default to ['*'] — it defaults to
+  # loopback-only (http://localhost:*/*, 127.0.0.1, [::1]), which rejects
+  # Claude's own callback (https://claude.ai/api/mcp/auth_callback). Listed
+  # explicitly here for every MCP client we actually use.
   clientIdMetadataDocuments:
     enabled: true
+    allowedRedirectUriPatterns:
+      - 'https://claude.ai/*'
+      - 'http://localhost:*/*'
+      - 'http://127.0.0.1:*/*'
+      - 'http://[::1]:*/*'
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
