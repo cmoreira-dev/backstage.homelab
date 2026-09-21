@@ -162,6 +162,36 @@ proxy:
   #   '/test':
   #     target: 'https://example.com'
   #     changeOrigin: true
+  endpoints:
+    # Grafana plugin (see grafana: below) proxies its API calls through here
+    # rather than hitting Grafana Cloud directly from the browser — keeps the
+    # API token server-side only.
+    '/grafana/api':
+      target: https://cassioliveiram.grafana.net
+      headers:
+        Authorization: Bearer ${GRAFANA_TOKEN}
+
+# see https://github.com/backstage/community-plugins/tree/main/workspaces/grafana
+# for more details. Grafana Cloud, not self-hosted — same REST API either way.
+grafana:
+  domain: https://cassioliveiram.grafana.net
+  # Grafana Cloud's unified alerting is always-on (legacy alerting was removed
+  # cluster-wide by Grafana Labs), so this must be true, not the plugin's
+  # own default of false.
+  unifiedAlerting: true
+
+# see https://github.com/backstage/community-plugins/tree/main/workspaces/argocd
+# for more details. Read-only 'backstage' account — see accounts.backstage in
+# homelab-bootsrap-k3s/k8s-addons/argocd/values.yaml.j2 (argocd-cm). No RBAC
+# group binding needed, falls back to argocd-rbac-cm's policy.default:
+# role:readonly.
+argocd:
+  appLocatorMethods:
+    - type: config
+      instances:
+        - name: homelab
+          url: https://argocd.cmoreira.dev
+          token: ${ARGOCD_AUTH_TOKEN}
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
