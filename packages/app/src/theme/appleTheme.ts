@@ -384,14 +384,20 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
     // (which is also the document's minimum touch target) rather than as the
     // height of the bar itself. Black surface and 12px `nav-link` type do
     // transfer literally.
+    // `drawer` is applied unconditionally (open or closed), so it alone
+    // covers the black background for both states. `drawerOpen`'s own base
+    // style in @backstage/core-components is a props-function (it reads
+    // `sidebarConfig.drawerWidthOpen` at render time, not at theme-creation
+    // time) — MUI v4's override merge (`deepmerge`) only merges plain
+    // objects, so an override on that key silently discards the function
+    // entirely and the drawer never grows past its closed width. Do not add
+    // a `drawerOpen` override here; style the open state via `drawer`'s own
+    // `&$drawerOpen` nesting if it's ever needed.
     BackstageSidebar: {
       styleOverrides: {
         drawer: {
           backgroundColor: colors.surfaceBlack,
           borderRight: 'none',
-        },
-        drawerOpen: {
-          backgroundColor: colors.surfaceBlack,
         },
       },
     },
@@ -448,14 +454,12 @@ export const appleTheme: UnifiedTheme = createUnifiedTheme({
         },
       },
     },
-    BackstageSidebarDivider: {
-      styleOverrides: {
-        root: {
-          // A hairline that reads on black without becoming a drawn line —
-          // the document divides by surface step, not by stroke.
-          backgroundColor: colors.surfaceTile2,
-        },
-      },
-    },
+    // No BackstageSidebarDivider override: `styled()` wraps its style
+    // function as `root: (props) => style({theme, ...props})` (see
+    // @material-ui/styles/styled), the same props-function shape as
+    // BackstageSidebar's `drawerOpen` above — a `root` override here would
+    // silently discard the built-in divider styles via the same `deepmerge`
+    // gap. Its default `#383838` already reads as a tone-on-black hairline
+    // close enough to `{colors.surfaceTile2}` that it isn't worth the risk.
   },
 });
