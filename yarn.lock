@@ -1311,8 +1311,8 @@ __metadata:
   linkType: hard
 
 "@backstage-community/plugin-argocd@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "@backstage-community/plugin-argocd@npm:3.1.2"
+  version: 3.1.3
+  resolution: "@backstage-community/plugin-argocd@npm:3.1.3"
   dependencies:
     "@backstage-community/plugin-argocd-common": "npm:^1.18.1"
     "@backstage/catalog-model": "npm:^1.10.0"
@@ -1337,7 +1337,7 @@ __metadata:
     react: ^17.0.0 || ^18.0.0
     react-dom: ^17.0.0 || ^18.0.0
     react-router-dom: ^6.3.0
-  checksum: 10c0/ce0fb5b9aecae1957b60e1ea61eba92ec43afb02b94b03f67d36fb7c3b9782cd5489f0fda61d4be13013dfa4f291e2db6eaf4b4bba678120452db142d311e915
+  checksum: 10c0/3060bad2ec100af16ca255df7ad891afe6fcff1096acd588de68a67e454284036f74b4f8c9fe0300aee9546e9b9a3120844d6a90ba71b91809be270f752dcc6f
   languageName: node
   linkType: hard
 
